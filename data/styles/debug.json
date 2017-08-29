@@ -1,0 +1,8 @@
+{
+	"fill_colour" 	: [255, 0, 136, 100],
+	"show_grid"		: true,
+	"grid_colour" 	: [255, 255, 255, 100],
+	"grid_width"	: 2,
+	"font_colour"	: [255, 255, 255, 255],
+	"font_size"		: 16
+}
