@@ -11,13 +11,14 @@ public abstract class GUIElement implements Comparable<GUIElement> {
 
 	GUIGrid parent; // Grid containing this element
 
-	public float x, y; // Cell of parent that aligns with my top-left
-	public float w, h; // How many of my parent's cells wide and tall I am
+	protected float x, y; // Cell of parent that aligns with my top-left
+	protected float w, h; // How many of my parent's cells wide and tall I am
 
 	public float sx, sy; // True coordinates, relative to the screen
 	public float sw, sh; // True dimensions, relative to the screen
 	
-	public int z = 0; // Used to sort elements for layering
+	protected int z = 0; // Used to sort elements for layering
+	public int sz; // The true z value, once adjusted to parent elements
 	
 	public GUIStyle style; // Define visual aspects of the Element
 
@@ -56,6 +57,8 @@ public abstract class GUIElement implements Comparable<GUIElement> {
 		this.sy = parent.sy + (y * parent.cellHeight);
 		this.sw = parent.cellWidth * w;
 		this.sh = parent.cellHeight * h;
+		
+		this.sz = this.z + this.parent.sz + 1;
 		
 		if (this instanceof GUIGrid) {
 			
@@ -112,6 +115,15 @@ public abstract class GUIElement implements Comparable<GUIElement> {
 	
 	public GUIElement visible() {
 		this.visible = true;
+		return this;
+	}
+	
+	public int zIndex() {
+		return this.z;
+	}
+	
+	public GUIElement zIndex(int z) {
+		this.z = z;
 		return this;
 	}
 	

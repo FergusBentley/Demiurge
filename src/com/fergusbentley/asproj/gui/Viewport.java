@@ -174,11 +174,6 @@ public class Viewport {
 			}
 		}
 		
-		// Update entities
-		for (Entity e : world.entities) {
-			e.tick();
-		}
-		
 		if (Config.debug) {
 			app.fill(Colour.colour(app.millis() % 255, (app.millis() % 127) * 2, (app.millis() % 85) * 3));
 			app.noStroke();

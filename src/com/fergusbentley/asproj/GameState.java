@@ -92,5 +92,9 @@ public class GameState {
 	public void togglePaused() {
 		this.paused = !this.paused;
 	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;		
+	}
 	
 }

@@ -13,7 +13,7 @@ import com.fergusbentley.asproj.entity.living.ActorHuman;
 
 public class MainGUI extends GUIGrid {
 
-	
+	private boolean pauseButtonActive;
 	
 	public MainGUI(Main a) {
 		super(a, Config.GRID_COLS, Config.GRID_ROWS);		
@@ -27,18 +27,18 @@ public class MainGUI extends GUIGrid {
 		GUIStyle black_panel = new GUIStyle(app, "styles/black_panel.json");
 		GUIStyle trans_button = new GUIStyle(app, "styles/trans_button.json");
 		GUIStyle trans_button_gold = new GUIStyle(app, "styles/trans_button_gold.json");
+		GUIStyle fade = new GUIStyle(app, "styles/fade.json");
 		
 		
-		GUIGrid loadScreen = new GUIGrid(app, 0, 0, 50, 32, 1, 1, 10, blackout)
-				.addChild("loadingText", new GUIText(app, "Loading Assets...", 0, 0, 1, 1));
-		addChild("loadScreen", loadScreen);
+		addChild("loadScreen", new GUIGrid(app, 0, 0, 50, 32, 1, 1, blackout)
+				.zIndex(100).asGrid()
+				.addChild("loadingText", new GUIText(app, "Loading Assets...", 0, 0, 1, 1)));
 		
-		
-		GUIGrid tray = new GUIGrid(app, 41, 31, 9, 1, 9, 1)
+		addChild("toolTray", new GUIGrid(app, 41, 31, 9, 1, 9, 1)
 				.addChild("maximiseSidebar", new GUIButton(app, 0, 0, 1, 1, Resources.get("button_question"), trans_button_gold)
 						.assign(new Callable<Boolean>() {
 							public Boolean call() {
-						        getChild("sidebar").visible();
+								getChild("sidebar").visible();
 						        getChild("toolTray").asGrid().getChild("maximiseSidebar").hidden();
 						        return true;
 							}
@@ -46,22 +46,52 @@ public class MainGUI extends GUIGrid {
 				.addChild("zoomIcon", new GUIIcon(app, 1, 0, 1, 1, "img/zoom.png"))
 				.addChild("zoomText", new GUIText(app, "100%", 2, 0, 3, 1))
 				.addChild("fpsIcon", new GUIIcon(app, 5, 0, 1, 1, "img/fps.png"))
-				.addChild("fpsText", new GUIText(app, "60fps", 6, 0, 3, 1));
-		addChild("toolTray", tray);
+				.addChild("fpsText", new GUIText(app, "60fps", 6, 0, 3, 1)));
 		
-		
-		GUIGrid sidebar = new GUIGrid(app, 41, 5, 8, 20, 8, 20, 1, panel)
+		addChild("sidebar", new GUIGrid(app, 41, 5, 8, 20, 8, 20, panel)
 				.addChild("entityView", new GUIEntityRender(app, 1, 1, 6, 4, null, black_panel))
 				.addChild("entityInfo", new GUIList(app, 1, 6, 6, 13, black_panel))
 				.addChild("minimiseSidebar", new GUIButton(app, 7, 0, 1, 1, Resources.get("button_no"), trans_button)
 						.assign(new Callable<Boolean>() {
-						   public Boolean call() {
-						        getChild("sidebar").hidden();
-						        getChild("toolTray").asGrid().getChild("maximiseSidebar").visible();
-						        return true;
-						   }
-						})).hidden().asGrid();
-		addChild("sidebar", sidebar);
+							public Boolean call() {
+								getChild("sidebar").hidden();
+								getChild("toolTray").asGrid().getChild("maximiseSidebar").visible();
+								return true;
+							}
+						}))
+				.hidden()
+				.asGrid());
+		
+		addChild("pauseMenu", new GUIGrid(app, 0, 0, 50, 32, 50, 32, fade)
+				.addChild("pausePanel", new GUIPanel(app, 19, 2, 12, 28))
+				.addChild("pauseTitle", new GUIText(app, "Game Paused", 20, 3, 10, 1))
+				.hidden()
+				.asGrid());
+		
+		addChild("pauseButton", new GUIButton(app, 1, 1, 1, 1, Resources.get("button_pause"))
+				.assign(new Callable<Boolean>() {
+				    public Boolean call() {
+				        pauseButtonActive = !pauseButtonActive;
+				        getChild("pauseMenu").visible();
+				        getChild("pauseButton").hidden();
+				        getChild("resumeButton").visible();
+				        return true;
+				    }
+				})
+				.zIndex(90));
+		
+		addChild("resumeButton", new GUIButton(app, 1, 1, 1, 1, Resources.get("button_play"))
+				.assign(new Callable<Boolean>() {
+				    public Boolean call() {
+				        pauseButtonActive = !pauseButtonActive;
+				        getChild("pauseMenu").hidden();
+				        getChild("pauseButton").visible();
+				        getChild("resumeButton").hidden();
+				        return true;
+				    }
+				})
+				.hidden()
+				.zIndex(90));
 	}
 	
 	
@@ -83,6 +113,8 @@ public class MainGUI extends GUIGrid {
 			getChild("loadScreen").hidden();
 			updateSidebar(game);
 		}
+		
+		game.setPaused(pauseButtonActive);
 		
 		getChild("toolTray").getChild("zoomText").asText().text = (int) Math.ceil((game.getZoom() * 10)) * 10 + "%";
 		getChild("toolTray").getChild("fpsText").asText().text = (int) Math.round(app.frameRate) + "fps";

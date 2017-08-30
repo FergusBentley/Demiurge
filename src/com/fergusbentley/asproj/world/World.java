@@ -346,7 +346,7 @@ public class World {
 	public List<Entity> getEntitiesUnderMouse(int gx, int gy) {
 		List<Entity> ents = new ArrayList<Entity>();
 		for (Entity ent : entities) {
-			if (ent.hovered(gx, gy)) ents.add(ent);
+			if (ent.hovered(gx, gy) && ent.shown) ents.add(ent);
 		}
 		Collections.sort(ents);
 		return ents;

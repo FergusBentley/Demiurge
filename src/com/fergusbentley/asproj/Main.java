@@ -89,15 +89,20 @@ public class Main extends PApplet implements PConstants {
 		
 		if (game.getState() == 2) {
 		
-			// Just in case nothing is drawn?
-			background(Colour.BLUE);
+			if (!game.isPaused()) {
 			
-			for (Entity e : world.spawnList) {
-				if (world.entities.size() < Config.ENTITY_LIMIT) world.addEntity(e);
+				// Update entities
+				for (Entity e : world.entities) {
+					e.tick();
+				}
+				
+				for (Entity e : world.spawnList) {
+					if (world.entities.size() < Config.ENTITY_LIMIT) world.addEntity(e);
+				}
+				world.spawnList.clear();
+				
+				world.sortEntities();
 			}
-			world.spawnList.clear();
-
-			world.sortEntities();
 			
 			viewport.draw(game, world);
 			
@@ -149,8 +154,11 @@ public class Main extends PApplet implements PConstants {
 		if (event.getButton() == LEFT) {
 			List<GUIElement> elems = gui.getHoveredChildren();
 			if (elems.size() > 0) {
-				GUIElement e = elems.get(0);
-				println(e);
+				for (GUIElement el : elems) {
+					println(el + " - " + el.sz);
+				}
+				GUIElement e = elems.get(elems.size() - 1);
+				println("--\non Top: " + e);
 				if (e instanceof GUIButton) {
 					((GUIButton)e).click();
 				}

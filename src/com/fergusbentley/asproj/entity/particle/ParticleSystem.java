@@ -3,20 +3,18 @@ package com.fergusbentley.asproj.entity.particle;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fergusbentley.asproj.GameState;
 import com.fergusbentley.asproj.entity.Entity;
 import com.fergusbentley.asproj.util.Colour;
 import com.fergusbentley.asproj.util.Util;
 import com.fergusbentley.asproj.world.World;
 
-import processing.core.PApplet;
 import processing.core.PImage;
 
 public class ParticleSystem extends Entity {
 
 	private List<Particle> particles;
 	private int maxParticleCount;
-	private PImage sprite;
+	// private PImage sprite;
 	private int size;
 	
 	public ParticleSystem(World w, int x, int y, PImage t, int s) {
@@ -24,7 +22,7 @@ public class ParticleSystem extends Entity {
 		this.size = s;
 		this.y += this.size / 2;
 		this.updateCorners();
-		this.sprite = t;
+		// this.sprite = t;
 		particles = new ArrayList<Particle>();
 		this.maxParticleCount = 10;
 		for (int i = 0; i < this.size; i++) {

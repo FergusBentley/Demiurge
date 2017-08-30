@@ -113,7 +113,6 @@ public class GUIGrid extends GUIElement {
 	// Add a child element, and set self as parent
 	public GUIGrid addChild(String n, GUIElement e) {
 		e.setParent(this);
-		e.z += this.z; // Update z-index of child, so elements are layerd correctly
 		this.elements.put(n, e);
 		return this;
 	}
@@ -130,9 +129,9 @@ public class GUIGrid extends GUIElement {
 			if (child.visible) {
 				if (child instanceof GUIGrid) { // Get child elements of subgrids, too
 					if (child.hovered()) {
+						childs.add(child);
 						List<GUIElement> subchilds = child.asGrid().getHoveredChildren();
 						childs.addAll(subchilds);
-						childs.add(child);
 					}
 				} else {
 					if (child.hovered()) {

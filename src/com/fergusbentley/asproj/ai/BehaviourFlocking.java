@@ -1,12 +1,8 @@
 package com.fergusbentley.asproj.ai;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.fergusbentley.asproj.entity.Entity;
 import com.fergusbentley.asproj.entity.living.Actor;
 import com.fergusbentley.asproj.entity.living.ActorSheep;
-
-import processing.core.PVector;
 
 public class BehaviourFlocking extends Behaviour {
 
@@ -46,7 +42,7 @@ public class BehaviourFlocking extends Behaviour {
 		
 		if (movementCooldown == 0) {
 
-			List<Actor> flock = new ArrayList<Actor>();
+			/* List<Actor> flock = new ArrayList<Actor>();
 			
 			int x = this.actor.x;
 			int y = this.actor.y;
@@ -81,13 +77,14 @@ public class BehaviourFlocking extends Behaviour {
 			seperationVector.normalize().mult(0.4f);
 			
 			PVector resultant = cohesionVector.add(seperationVector);
-			//int dx = (int)Math.round(resultant.x);
-			//int dy = (int)Math.round(resultant.y);
-			//if ((dx == 0 && dy == 0) || !this.actor.world.isPassable(this.actor.cx + dx, this.actor.cy + dy, this.actor.colliderWidth, this.actor.colliderHeight, this.actor)) {
-				int dx = (int) Math.round((Math.random() * 2) - 1);
-				int dy = (int) Math.round((Math.random() * 2) - 1);
-			//}
-			
+			int dx = (int)Math.round(resultant.x);
+			int dy = (int)Math.round(resultant.y);
+			if ((dx == 0 && dy == 0) || !this.actor.world.isPassable(this.actor.cx + dx, this.actor.cy + dy, this.actor.colliderWidth, this.actor.colliderHeight, this.actor)) {
+				int dx = 
+				int dy = 
+			} */
+			int dx = (int) Math.round((Math.random() * 2) - 1);
+			int dy = (int) Math.round((Math.random() * 2) - 1);
 			this.actor.move(dx, dy);
 			
 			if (this.actor instanceof ActorSheep) {

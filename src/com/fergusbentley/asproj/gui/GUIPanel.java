@@ -41,6 +41,11 @@ public class GUIPanel extends GUIElement {
 
 				app.rect(sx, sy, sw, sh);
 
+			} else {
+				app.fill(Colour.REGAL_BLUE);
+				app.stroke(Colour.grey(80));
+				app.strokeWeight(2);
+				app.rect(sx, sy, sw, sh);
 			}
 
 		}
