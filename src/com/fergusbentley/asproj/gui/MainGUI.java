@@ -66,6 +66,7 @@ public class MainGUI extends GUIGrid {
 				.addChild("pausePanel", new GUIPanel(app, 19, 2, 12, 28))
 				.addChild("pauseTitle", new GUIText(app, "Game Paused", 20, 3, 10, 1))
 				.hidden()
+				.zIndex(80)
 				.asGrid());
 		
 		addChild("pauseButton", new GUIButton(app, 1, 1, 1, 1, Resources.get("button_pause"))

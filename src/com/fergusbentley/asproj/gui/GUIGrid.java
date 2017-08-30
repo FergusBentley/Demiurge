@@ -124,24 +124,24 @@ public class GUIGrid extends GUIElement {
 	
 	// Return a list of elements under the mouse pointer
 	public List<GUIElement> getHoveredChildren() {
-		List<GUIElement> childs = new ArrayList<GUIElement>();
+		List<GUIElement> children = new ArrayList<GUIElement>();
 		for (GUIElement child : elements.values()) {
 			if (child.visible) {
 				if (child instanceof GUIGrid) { // Get child elements of subgrids, too
 					if (child.hovered()) {
-						childs.add(child);
+						children.add(child);
 						List<GUIElement> subchilds = child.asGrid().getHoveredChildren();
-						childs.addAll(subchilds);
+						children.addAll(subchilds);
 					}
 				} else {
 					if (child.hovered()) {
-						childs.add(child);
+						children.add(child);
 					}
 				}
 			}
 		}
-		Collections.sort(childs); // Sort by z-index
-		return childs;
+		Collections.sort(children); // Sort by z-index
+		return children;
 	}
 
 	@Override

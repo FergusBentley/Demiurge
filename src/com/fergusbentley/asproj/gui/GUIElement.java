@@ -128,7 +128,7 @@ public abstract class GUIElement implements Comparable<GUIElement> {
 	}
 	
 	public int compareTo(GUIElement e) {
-		return (int) Math.signum(this.z - e.z);
+		return (int) Math.signum(this.sz - e.sz);
 	}
 	
 	public boolean hovered() {
