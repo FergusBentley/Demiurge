@@ -70,12 +70,17 @@ public class GUIButton extends GUIElement {
 				// Draw image if applicable
 				if (this.image != null) {
 					app.image(this.image, sx, sy, sw, sh);
+					if (game.getHoveredElement() == this) {
+						app.fill(255, 150);
+						app.noStroke();
+						app.rect(sx, sy, sw, sh);
+					}
 				}
 				// Else write & style text
 				else if (this.text != null){
 					
 					float am = 1;
-					if (this.hovered()) {
+					if (game.getHoveredElement() == this) {
 						am = 3;
 					}
 					
@@ -103,10 +108,9 @@ public class GUIButton extends GUIElement {
 				app.strokeWeight(2);
 				app.rect(sx, sy, sw, sh);
 				
-				if (this.hovered()) {
+				if (game.getHoveredElement() == this) {
 					app.fill(255, 150);
-					app.stroke(Colour.YELLOW);
-					app.strokeWeight(2);
+					app.noStroke();
 					app.rect(sx, sy, sw, sh);
 				}
 				

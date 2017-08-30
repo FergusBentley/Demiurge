@@ -2,6 +2,7 @@ package com.fergusbentley.asproj;
 
 import com.fergusbentley.asproj.entity.Entity;
 import com.fergusbentley.asproj.entity.particle.ParticleSystem;
+import com.fergusbentley.asproj.gui.GUIElement;
 
 import processing.core.PVector;
 
@@ -16,6 +17,7 @@ public class GameState {
 	private float panX;
 	private float panY;
 	
+	private GUIElement hoveredElement;
 	private Entity selectedEntity;
 	private ParticleSystem mouseEffect;
 	
@@ -95,6 +97,14 @@ public class GameState {
 
 	public void setPaused(boolean paused) {
 		this.paused = paused;		
+	}
+
+	public GUIElement getHoveredElement() {
+		return hoveredElement;
+	}
+	
+	public void setHoveredElement(GUIElement hoveredElement) {
+		this.hoveredElement = hoveredElement;
 	}
 	
 }

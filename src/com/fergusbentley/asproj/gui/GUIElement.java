@@ -47,6 +47,7 @@ public abstract class GUIElement implements Comparable<GUIElement> {
 	public void setParent(GUIGrid p) {
 		this.parent = p;
 		if (parent != null) {
+			this.z += this.parent.elements.size();
 			updateTrueDimensions();
 		}
 	}
@@ -58,7 +59,7 @@ public abstract class GUIElement implements Comparable<GUIElement> {
 		this.sw = parent.cellWidth * w;
 		this.sh = parent.cellHeight * h;
 		
-		this.sz = this.z + this.parent.sz + 1;
+		this.sz = this.z + this.parent.sz;
 		
 		if (this instanceof GUIGrid) {
 			

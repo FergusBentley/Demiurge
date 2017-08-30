@@ -63,8 +63,9 @@ public class MainGUI extends GUIGrid {
 				.asGrid());
 		
 		addChild("pauseMenu", new GUIGrid(app, 0, 0, 50, 32, 50, 32, fade)
-				.addChild("pausePanel", new GUIPanel(app, 19, 2, 12, 28))
-				.addChild("pauseTitle", new GUIText(app, "Game Paused", 20, 3, 10, 1))
+				.addChild("pausePanel", new GUIPanel(app, 19, 5, 12, 20))
+				.addChild("pauseTitle", new GUIText(app, "Game Paused", 20, 6, 10, 2, blackout))
+				.addChild("pauseResume", new GUIButton(app, 20, 8, 10, 2, "Resume"))
 				.hidden()
 				.zIndex(80)
 				.asGrid());

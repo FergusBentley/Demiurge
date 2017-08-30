@@ -154,11 +154,11 @@ public class Main extends PApplet implements PConstants {
 		if (event.getButton() == LEFT) {
 			List<GUIElement> elems = gui.getHoveredChildren();
 			if (elems.size() > 0) {
+				GUIElement e = elems.get(elems.size() - 1);
 				for (GUIElement el : elems) {
 					println(el + " - " + el.sz);
 				}
-				GUIElement e = elems.get(elems.size() - 1);
-				println("--\non Top: " + e);
+				//println("--\non Top: " + e);
 				if (e instanceof GUIButton) {
 					((GUIButton)e).click();
 				}
@@ -180,6 +180,16 @@ public class Main extends PApplet implements PConstants {
 			println(gx, gy, id);
 		}
 		
+	}
+	
+	public void mouseMoved() {
+		List<GUIElement> elems = gui.getHoveredChildren();
+		if (elems.size() > 0) {
+			GUIElement e = elems.get(elems.size() - 1);
+			game.setHoveredElement(e);
+			return;
+		}
+		game.setHoveredElement(null);
 	}
 
 }
