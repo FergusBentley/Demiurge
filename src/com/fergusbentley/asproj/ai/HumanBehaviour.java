@@ -207,12 +207,10 @@ public class HumanBehaviour extends Behaviour {
 		PathfindingThread pt = (PathfindingThread) thread;
 		this.route = pt.result;
 		if (this.route == null) {
-			PApplet.println("Pathfinding failed!");
 			pathfinding = false;
 			travelling = false;
 			lastFailed = true;
 		} else {
-			PApplet.println("Path found!");
 			pathfinding = false;
 			travelling = true;
 			lastFailed = false;

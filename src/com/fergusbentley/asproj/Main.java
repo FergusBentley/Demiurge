@@ -9,7 +9,6 @@ import com.fergusbentley.asproj.gui.GUIButton;
 import com.fergusbentley.asproj.gui.GUIElement;
 import com.fergusbentley.asproj.gui.MainGUI;
 import com.fergusbentley.asproj.gui.Viewport;
-import com.fergusbentley.asproj.util.Colour;
 import com.fergusbentley.asproj.world.World;
 
 import processing.core.PApplet;
@@ -158,10 +157,6 @@ public class Main extends PApplet implements PConstants {
 			List<GUIElement> elems = gui.getHoveredChildren();
 			if (elems.size() > 0) {
 				GUIElement e = elems.get(elems.size() - 1);
-				for (GUIElement el : elems) {
-					println(el + " - " + el.sz);
-				}
-				//println("--\non Top: " + e);
 				if (e instanceof GUIButton) {
 					((GUIButton)e).click();
 				}
@@ -171,7 +166,6 @@ public class Main extends PApplet implements PConstants {
 			List<Entity> ents = world.getEntitiesUnderMouse(viewport.screenToGridX(mouseX), viewport.screenToGridY(mouseY));
 			if (ents.size() > 0) {
 				Entity ent = ents.get(0);
-				PApplet.println(ent);
 				game.setSelectedEntity(ent);
 				return;
 			}

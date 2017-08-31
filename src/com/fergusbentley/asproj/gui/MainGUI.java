@@ -71,10 +71,12 @@ public class MainGUI extends GUIGrid implements PConstants {
 				.addChild("pauseResume", new GUIButton(app, 20, 14, 10, 2, "Resume", light_panel)
 						.assign(new Callable<Boolean>() {
 						    public Boolean call() {
-						        pauseButtonActive = !pauseButtonActive;
-						        getChild("pauseMenu").hidden();
-						        getChild("pauseButton").visible();
-						        getChild("resumeButton").hidden();
+						    	if (pauseButtonActive) {
+						        	pauseButtonActive = false;
+							        getChild("pauseMenu").hidden();
+							        getChild("pauseButton").visible();
+							        getChild("resumeButton").hidden();
+						        }
 						        return true;
 						    }
 						})
@@ -89,10 +91,12 @@ public class MainGUI extends GUIGrid implements PConstants {
 		addChild("pauseButton", new GUIButton(app, 1, 1, 1, 1, Resources.get("button_pause"))
 				.assign(new Callable<Boolean>() {
 				    public Boolean call() {
-				        pauseButtonActive = !pauseButtonActive;
-				        getChild("pauseMenu").visible();
-				        getChild("pauseButton").hidden();
-				        getChild("resumeButton").visible();
+				        if (!pauseButtonActive) {
+				        	pauseButtonActive = true;
+					        getChild("pauseMenu").visible();
+					        getChild("pauseButton").hidden();
+					        getChild("resumeButton").visible();
+				        }
 				        return true;
 				    }
 				})
@@ -101,10 +105,12 @@ public class MainGUI extends GUIGrid implements PConstants {
 		addChild("resumeButton", new GUIButton(app, 1, 1, 1, 1, Resources.get("button_play"))
 				.assign(new Callable<Boolean>() {
 				    public Boolean call() {
-				        pauseButtonActive = !pauseButtonActive;
-				        getChild("pauseMenu").hidden();
-				        getChild("pauseButton").visible();
-				        getChild("resumeButton").hidden();
+				    	if (pauseButtonActive) {
+				        	pauseButtonActive = false;
+					        getChild("pauseMenu").hidden();
+					        getChild("pauseButton").visible();
+					        getChild("resumeButton").hidden();
+				        }
 				        return true;
 				    }
 				})
