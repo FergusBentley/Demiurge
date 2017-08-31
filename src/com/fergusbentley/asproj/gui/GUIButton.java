@@ -3,6 +3,7 @@ package com.fergusbentley.asproj.gui;
 import java.util.concurrent.Callable;
 
 import com.fergusbentley.asproj.GameState;
+import com.fergusbentley.asproj.InputHandler;
 import com.fergusbentley.asproj.Main;
 import com.fergusbentley.asproj.util.Colour;
 
@@ -99,6 +100,12 @@ public class GUIButton extends GUIElement {
 					
 					app.textAlign(3, 3);
 					app.text(this.text, sx + (sw / 2f), sy + (sh / 2f));
+					
+					if (game.getHoveredElement() == this) {
+						app.fill(255, 150);
+						app.noStroke();
+						app.rect(sx, sy, sw, sh);
+					}
 				}
 				
 			} else {
@@ -116,6 +123,12 @@ public class GUIButton extends GUIElement {
 				
 				if (this.image != null) {
 					app.image(this.image, sx, sy, sw, sh);
+				}
+				
+				else if (this.text != null) {
+					app.fill(255);
+					app.textAlign(3, 3);
+					app.text(this.text, sx + (sw / 2f), sy + (sh / 2f));
 				}
 			}
 			
@@ -140,6 +153,11 @@ public class GUIButton extends GUIElement {
 			}
 		}
 		
+	}
+
+	public GUIElement bind(char key) {
+		InputHandler.addBind(key, this);
+		return this;
 	}
 
 }

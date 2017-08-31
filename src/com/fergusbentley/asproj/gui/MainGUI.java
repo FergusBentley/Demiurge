@@ -11,7 +11,9 @@ import com.fergusbentley.asproj.ai.HumanBehaviour;
 import com.fergusbentley.asproj.entity.Entity;
 import com.fergusbentley.asproj.entity.living.ActorHuman;
 
-public class MainGUI extends GUIGrid {
+import processing.core.PConstants;
+
+public class MainGUI extends GUIGrid implements PConstants {
 
 	private boolean pauseButtonActive;
 	
@@ -25,6 +27,7 @@ public class MainGUI extends GUIGrid {
 		GUIStyle blackout = new GUIStyle(app, "styles/blackout.json");
 		GUIStyle panel = new GUIStyle(app, "styles/panel.json");
 		GUIStyle black_panel = new GUIStyle(app, "styles/black_panel.json");
+		GUIStyle light_panel = new GUIStyle(app, "styles/light_panel.json");
 		GUIStyle trans_button = new GUIStyle(app, "styles/trans_button.json");
 		GUIStyle trans_button_gold = new GUIStyle(app, "styles/trans_button_gold.json");
 		GUIStyle fade = new GUIStyle(app, "styles/fade.json");
@@ -63,9 +66,22 @@ public class MainGUI extends GUIGrid {
 				.asGrid());
 		
 		addChild("pauseMenu", new GUIGrid(app, 0, 0, 50, 32, 50, 32, fade)
-				.addChild("pausePanel", new GUIPanel(app, 19, 5, 12, 20))
-				.addChild("pauseTitle", new GUIText(app, "Game Paused", 20, 6, 10, 2, blackout))
-				.addChild("pauseResume", new GUIButton(app, 20, 8, 10, 2, "Resume"))
+				.addChild("pausePanel", new GUIPanel(app, 19, 9, 12, 14))
+				.addChild("pauseTitle", new GUIText(app, "Game Paused", 20, 10, 10, 2, black_panel))
+				.addChild("pauseResume", new GUIButton(app, 20, 14, 10, 2, "Resume", light_panel)
+						.assign(new Callable<Boolean>() {
+						    public Boolean call() {
+						        pauseButtonActive = !pauseButtonActive;
+						        getChild("pauseMenu").hidden();
+						        getChild("pauseButton").visible();
+						        getChild("resumeButton").hidden();
+						        return true;
+						    }
+						})
+						.bind('E')
+					)
+				.addChild("pauseSave", new GUIButton(app, 20, 17, 10, 2, "Save", light_panel))
+				.addChild("pauseExit", new GUIButton(app, 20, 20, 10, 2, "Save + Exit", light_panel))
 				.hidden()
 				.zIndex(80)
 				.asGrid());

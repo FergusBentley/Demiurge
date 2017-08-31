@@ -47,6 +47,8 @@ public class Main extends PApplet implements PConstants {
 	// Initialisation, called before first call to draw()
 	public void setup() {
 		
+		println("[LOG] " + dataPath(""));
+		
 		font = loadFont("Pixellari-16.vlw");
 		textFont(font);
 		
@@ -134,6 +136,7 @@ public class Main extends PApplet implements PConstants {
 	
 	// Detect key presses, pan if arrow keys pressed
 	public void keyPressed() {
+		InputHandler.handleKeyPress((char)keyCode);
 		if(keyCode == UP) viewport.pan(0, 1);
 	    if(keyCode == DOWN) viewport.pan(0, -1);
 	    if(keyCode == LEFT) viewport.pan(1, 0);
