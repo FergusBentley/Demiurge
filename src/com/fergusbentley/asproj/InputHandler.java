@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import processing.core.PApplet;
-
 public class InputHandler {
 
 	private static Map<Integer, Callable<Boolean>> binds = new HashMap<Integer, Callable<Boolean>>();
