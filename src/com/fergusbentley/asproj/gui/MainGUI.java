@@ -81,7 +81,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 						        return true;
 						    }
 						})
-						.bind('E')
+						.bind(TAB)
 					)
 				.addChild("pauseSave", new GUIButton(app, 20, 17, 10, 2, "Save", light_panel))
 				.addChild("pauseExit", new GUIButton(app, 20, 20, 10, 2, "Exit", light_panel)
@@ -134,14 +134,16 @@ public class MainGUI extends GUIGrid implements PConstants {
 								app.exit();
 								return true;
 							}
-						}))
+						})
+						.bind(ENTER))
 				.addChild("exitDeny", new GUIButton(app, 26, 16, 10, 2, "No")
 						.assign(new Callable<Boolean>() {
 							public Boolean call() {
 								getChild("exitWarning").hidden();
 								return true;
 							}
-						}))
+						})
+						.bind(TAB))
 				.zIndex(85)
 				.hidden());
 	}

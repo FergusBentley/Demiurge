@@ -156,7 +156,18 @@ public class GUIButton extends GUIElement {
 	}
 
 	public GUIElement bind(char key) {
-		InputHandler.addBind(key, this);
+		InputHandler.addBind(key, new Callable<Boolean>() {
+			public Boolean call() {
+				if (visible) {
+					try {
+						callback.call();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				return true;
+			}
+		});
 		return this;
 	}
 

@@ -4,6 +4,7 @@ import com.fergusbentley.asproj.entity.Entity;
 import com.fergusbentley.asproj.entity.particle.ParticleSystem;
 import com.fergusbentley.asproj.gui.GUIElement;
 
+import processing.core.PApplet;
 import processing.core.PVector;
 
 public class GameState {
@@ -24,6 +25,7 @@ public class GameState {
 	public GameState() {
 		this.setState(0);
 		this.setSelectedEntity(null);
+		this.setZoom(Config.DEFAULT_ZOOM);
 	}
 
 	public Entity getSelectedEntity() {
@@ -105,6 +107,17 @@ public class GameState {
 	
 	public void setHoveredElement(GUIElement hoveredElement) {
 		this.hoveredElement = hoveredElement;
+	}
+
+	// Adjust the apparent size of a grid square
+	public void zoom(float amount) {
+		zoom = PApplet.constrain(zoom - amount, Config.MIN_ZOOM, Config.MAX_ZOOM);
+	}
+	
+	// Offset the viewport
+	public void pan(int ax, int ay) {
+		this.panX += ax * (0.5 / zoom);
+		this.panY += ay * (0.5 / zoom);
 	}
 	
 }

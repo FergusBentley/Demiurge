@@ -96,24 +96,6 @@ public class Viewport {
 		return (int) (((sy - ((h - (size * GH)) / 2)) / size) - panY);
 	}
 
-	// Adjust the apparent size of a grid square
-	public void zoom(float amount) {
-		zoom = PApplet.constrain(zoom - amount, Config.MIN_ZOOM, Config.MAX_ZOOM);
-		size = zoom * scale;
-		updateDrawRegion();
-	}
-	
-	public float zoom() {
-		return zoom;
-	}
-
-	// Offset the viewport
-	public void pan(int ax, int ay) {
-		this.panX += ax * (0.5 / zoom);
-		this.panY += ay * (0.5 / zoom);
-		updateDrawRegion();
-	}
-
 	// Update variables when camera moves to limit calculations per draw
 	void updateDrawRegion() {
 		minX = PApplet.constrain((int) Math.floor(screenToGridX(0)), 0, GW);
@@ -146,8 +128,11 @@ public class Viewport {
 
 		app.background(Colour.BLUE);
 		
-		game.setZoom(zoom);
-		game.setPan(panX, panY);
+		this.zoom = game.getZoom();
+		this.panX = game.getPan().x;
+		this.panY = game.getPan().y;
+		
+		updateDrawRegion();
 		
 		// Draw tiles within viewport bounds
 		for (int x = minX; x < maxX + 1; x++) {

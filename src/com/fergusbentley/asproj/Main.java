@@ -1,6 +1,7 @@
 package com.fergusbentley.asproj;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import com.fergusbentley.asproj.entity.Entity;
 import com.fergusbentley.asproj.entity.living.ActorHuman;
@@ -57,6 +58,41 @@ public class Main extends PApplet implements PConstants {
 		game = new GameState();
 		
 		Resources.load(this); // Load all images under /data/img/
+		
+		InputHandler.addBind(UP, new Callable<Boolean>() {
+			public Boolean call() {
+				game.pan(0, 1);
+				return true;
+			}
+		});
+		
+		InputHandler.addBind(DOWN, new Callable<Boolean>() {
+			public Boolean call() {
+				game.pan(0, -1);
+				return true;
+			}
+		});
+		
+		InputHandler.addBind(LEFT, new Callable<Boolean>() {
+			public Boolean call() {
+				game.pan(1, 0);
+				return true;
+			}
+		});
+		
+		InputHandler.addBind(RIGHT, new Callable<Boolean>() {
+			public Boolean call() {
+				game.pan(-1, 0);
+				return true;
+			}
+		});
+		
+		InputHandler.addBind(SHIFT, new Callable<Boolean>() {
+			public Boolean call() {
+				Config.debug = !Config.debug;
+				return true;
+			}
+		});
 		
 		gui = new MainGUI(this);
 		gui.construct();
@@ -135,19 +171,14 @@ public class Main extends PApplet implements PConstants {
 	
 	// Detect key presses, pan if arrow keys pressed
 	public void keyPressed() {
-		InputHandler.handleKeyPress((char)keyCode);
-		if(keyCode == UP) viewport.pan(0, 1);
-	    if(keyCode == DOWN) viewport.pan(0, -1);
-	    if(keyCode == LEFT) viewport.pan(1, 0);
-	    if(keyCode == RIGHT) viewport.pan(-1, 0);
-	    if(keyCode == SHIFT) Config.debug = !Config.debug;
+		InputHandler.handleKeyPress(keyCode);
 	}
 	
 	
 	// Zoom with mouse wheel
 	public void mouseWheel(MouseEvent event) {
 	  float e = event.getCount();
-	  viewport.zoom((float) (e * 0.1));
+	  game.zoom((float) (e * 0.1));
 	}
 	
 	public void mouseClicked(MouseEvent event) {

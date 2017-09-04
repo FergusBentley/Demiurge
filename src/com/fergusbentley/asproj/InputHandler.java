@@ -2,21 +2,26 @@ package com.fergusbentley.asproj;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
-import com.fergusbentley.asproj.gui.GUIButton;
+import processing.core.PApplet;
 
 public class InputHandler {
 
-	private static Map<String, GUIButton> buttonBinds = new HashMap<String, GUIButton>();
+	private static Map<Integer, Callable<Boolean>> binds = new HashMap<Integer, Callable<Boolean>>();
 	
-	public static void addBind(char key, GUIButton element) {
-		buttonBinds.put("" + key, element);
+	public static void addBind(int key, Callable<Boolean> callback) {
+		binds.put(key, callback);
 	}
 	
-	public static void handleKeyPress(char key) {
-		GUIButton button = buttonBinds.get("" + key);
-		if (button != null) {
-			button.click();
+	public static void handleKeyPress(int key) {
+		Callable<Boolean> callback = binds.get(key);
+		if (callback != null) {
+			try {
+				callback.call();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
