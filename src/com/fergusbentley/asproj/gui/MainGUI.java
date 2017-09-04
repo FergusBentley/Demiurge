@@ -31,6 +31,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 		GUIStyle trans_button = new GUIStyle(app, "styles/trans_button.json");
 		GUIStyle trans_button_gold = new GUIStyle(app, "styles/trans_button_gold.json");
 		GUIStyle fade = new GUIStyle(app, "styles/fade.json");
+		GUIStyle unfocused = new GUIStyle(app, "styles/unfocused.json");
 		
 		
 		addChild("loadScreen", new GUIGrid(app, 0, 0, 50, 32, 1, 1, blackout)
@@ -83,7 +84,13 @@ public class MainGUI extends GUIGrid implements PConstants {
 						.bind('E')
 					)
 				.addChild("pauseSave", new GUIButton(app, 20, 17, 10, 2, "Save", light_panel))
-				.addChild("pauseExit", new GUIButton(app, 20, 20, 10, 2, "Save + Exit", light_panel))
+				.addChild("pauseExit", new GUIButton(app, 20, 20, 10, 2, "Exit", light_panel)
+						.assign(new Callable<Boolean>() {
+						    public Boolean call() {
+						    	getChild("exitWarning").visible();
+						        return true;
+						    }
+						}))
 				.hidden()
 				.zIndex(80)
 				.asGrid());
@@ -116,6 +123,27 @@ public class MainGUI extends GUIGrid implements PConstants {
 				})
 				.hidden()
 				.zIndex(90));
+		
+		addChild("exitWarning", new GUIGrid(app, 0, 0, 50, 32, 50, 32, fade)
+				.addChild("exitPanel", new GUIPanel(app, 13, 12, 24, 7))
+				.addChild("exitText1", new GUIText(app, "Are you sure you want to exit the game?", 15, 13, 20, 1))
+				.addChild("exitText2", new GUIText(app, "Any unsaved progress will be lost.", 15, 14, 20, 1, unfocused))
+				.addChild("exitConfirm", new GUIButton(app, 15, 16, 10, 2, "Yes")
+						.assign(new Callable<Boolean>() {
+							public Boolean call() {
+								app.exit();
+								return true;
+							}
+						}))
+				.addChild("exitDeny", new GUIButton(app, 26, 16, 10, 2, "No")
+						.assign(new Callable<Boolean>() {
+							public Boolean call() {
+								getChild("exitWarning").hidden();
+								return true;
+							}
+						}))
+				.zIndex(85)
+				.hidden());
 	}
 	
 	
