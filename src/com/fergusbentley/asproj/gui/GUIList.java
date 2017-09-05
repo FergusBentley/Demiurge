@@ -63,10 +63,14 @@ public class GUIList extends GUIElement implements PConstants {
 			
 			app.textAlign(LEFT, CENTER); // Align text centrally
 			
+			app.clip(sx, sy, sw, sh);
+			
 			for (int i = 0; i < lines.size(); i++) {
 				String line = lines.get(i);
 				app.text(line, 3 + sx, 3 + sy + (parent.cellHeight / 2f) + (parent.cellHeight * i));
 			}
+			
+			app.noClip();
 		}
 	}
 
