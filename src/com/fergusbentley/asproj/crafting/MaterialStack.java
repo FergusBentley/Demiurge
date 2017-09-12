@@ -1,4 +1,4 @@
-package com.fergusbentley.asproj.entity.structure;
+package com.fergusbentley.asproj.crafting;
 
 public class MaterialStack {
 

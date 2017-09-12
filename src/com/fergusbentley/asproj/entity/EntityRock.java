@@ -1,8 +1,8 @@
 package com.fergusbentley.asproj.entity;
 
 import com.fergusbentley.asproj.Resources;
-import com.fergusbentley.asproj.entity.structure.Material;
-import com.fergusbentley.asproj.entity.structure.MaterialStack;
+import com.fergusbentley.asproj.crafting.Material;
+import com.fergusbentley.asproj.crafting.MaterialStack;
 import com.fergusbentley.asproj.world.World;
 
 import processing.core.PConstants;
@@ -25,6 +25,11 @@ public class EntityRock extends Entity implements PConstants, Harvestable {
 	@Override
 	public MaterialStack harvest() {
 		return new MaterialStack(Material.ROCK, (int)(Math.random() * 15 + 5));
+	}
+
+	@Override
+	public boolean isHarvestable() {
+		return true;
 	}
 
 }

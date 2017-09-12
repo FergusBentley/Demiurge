@@ -2,8 +2,8 @@ package com.fergusbentley.asproj.entity;
 
 import com.fergusbentley.asproj.Config;
 import com.fergusbentley.asproj.Resources;
-import com.fergusbentley.asproj.entity.structure.Material;
-import com.fergusbentley.asproj.entity.structure.MaterialStack;
+import com.fergusbentley.asproj.crafting.Material;
+import com.fergusbentley.asproj.crafting.MaterialStack;
 import com.fergusbentley.asproj.util.Util;
 import com.fergusbentley.asproj.world.World;
 
@@ -59,7 +59,15 @@ public class EntityTree extends Entity implements PConstants, Harvestable {
 
 	@Override
 	public MaterialStack harvest() {
-		this.age = 1;
-		return new MaterialStack(Material.WOOD, this.age - 1 * 10);
+		if (this.age > 1) {
+			this.age = 1;
+			return new MaterialStack(Material.WOOD, this.age - 1 * 10);
+		}
+		return null;
+	}
+	
+	@Override
+	public boolean isHarvestable() {
+		return this.age > 1;
 	}
 }

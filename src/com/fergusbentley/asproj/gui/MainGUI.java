@@ -7,7 +7,7 @@ import com.fergusbentley.asproj.Config;
 import com.fergusbentley.asproj.GameState;
 import com.fergusbentley.asproj.Main;
 import com.fergusbentley.asproj.Resources;
-import com.fergusbentley.asproj.ai.HumanBehaviour;
+import com.fergusbentley.asproj.ai.BehaviourHuman;
 import com.fergusbentley.asproj.entity.Entity;
 import com.fergusbentley.asproj.entity.living.ActorHuman;
 
@@ -184,7 +184,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 			infoList.addLine(selected.x + ", " + selected.y);
 			if (selected instanceof ActorHuman) {
 				ActorHuman human = (ActorHuman) selected;
-				HumanBehaviour hb = ((HumanBehaviour)human.behaviour);
+				BehaviourHuman hb = ((BehaviourHuman)human.behaviour);
 				Map<String, Float> stats = hb.stats;
 				infoList.addLine("H: " + stats.get("health").intValue());
 				infoList.addLine("E: " + stats.get("exposure").intValue());

@@ -4,7 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fergusbentley.asproj.crafting.Material;
+import com.fergusbentley.asproj.crafting.MaterialStack;
+import com.fergusbentley.asproj.crafting.Recipe;
+import com.fergusbentley.asproj.crafting.TechTree;
 import com.fergusbentley.asproj.entity.Entity;
+import com.fergusbentley.asproj.entity.Harvestable;
 import com.fergusbentley.asproj.entity.Interactable;
 import com.fergusbentley.asproj.entity.living.Actor;
 import com.fergusbentley.asproj.entity.living.ActorHuman;
@@ -15,7 +20,7 @@ import com.fergusbentley.asproj.util.Util;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class HumanBehaviour extends Behaviour {
+public class BehaviourHuman extends Behaviour {
 
 	public Map<String, Float> stats = new HashMap<String, Float>();
 	
@@ -23,6 +28,10 @@ public class HumanBehaviour extends Behaviour {
 	public Boolean pathfinding; // Whether the actor is searching for a path
 	
 	public TaskQueue queue;
+	
+	private TechTree techTree;
+	private Map<Material, Integer> materials;
+	private Recipe building;
 	
 	Entity target;
 	PVector targetPos;
@@ -33,11 +42,12 @@ public class HumanBehaviour extends Behaviour {
 	private boolean lastFailed = false;
 
 	private int movementCooldown; // How long until next movement
-
+	private int counter; // Used to repeat actions
+	
 	public Boolean indoors; // Whether the actor is inside a building
 	public StructAbode abode;
 	
-	public HumanBehaviour(Actor a) {
+	public BehaviourHuman(Actor a) {
 		super(a);
 	}
 
@@ -59,7 +69,9 @@ public class HumanBehaviour extends Behaviour {
 		
 		this.target = null;
 		
-		this.queue = new TaskQueue();
+		this.queue = new TaskQueue(ActorTask.done);
+		this.techTree = new TechTree();
+		this.materials = new HashMap<Material, Integer>();
 	}
 
 	@Override
@@ -88,10 +100,8 @@ public class HumanBehaviour extends Behaviour {
 	@Override
 	public void act() {
 		
-		// PApplet.println(this.task.id);
-		
 		ActorTask currentTask = this.queue.current();
-		
+		// PApplet.println(currentTask.id);
 		if (currentTask.id == "done") {
 			if (this.indoors) {
 				if (this.stats.get("exposure") < 10) {
@@ -113,7 +123,7 @@ public class HumanBehaviour extends Behaviour {
 		}
 		else if (currentTask.id == "seekShelter") {
 			Map<Entity, PVector> abodes = this.map.search(StructAbode.class);
-			PApplet.println("Found " + abodes.size() + " abodes");
+			// PApplet.println("Found " + abodes.size() + " abodes");
 			if (abodes.size() > 0) {
 				Entity closest = null;
 				float cd = Float.MAX_VALUE;
@@ -128,6 +138,9 @@ public class HumanBehaviour extends Behaviour {
 				this.target = closest;
 				this.targetPos = closest.pos().add(0, 1);
 				this.queue.done();
+			} else {
+				//this.queue.pushIn(ActorTask.build);
+				this.building = this.techTree.getRecipe("abode1");
 			}
 		}
 		else if (currentTask.id == "exitAbode") {
@@ -180,10 +193,100 @@ public class HumanBehaviour extends Behaviour {
 		else if (currentTask.id == "interact") {
 			if (this.target instanceof Interactable) {
 				((Interactable) this.target).interact((ActorHuman)this.actor);
+				this.queue.done();
+			} else if (this.target instanceof Harvestable) {
+				MaterialStack mats = ((Harvestable) this.target).harvest();
+				if (mats != null) {
+					if (this.materials.get(mats.material) != null) {
+						this.materials.put(mats.material, this.materials.get(mats.material) + mats.amount);
+					} else {
+						this.materials.put(mats.material, mats.amount);
+					}
+					this.queue.done();
+				} else {
+					this.queue.pushIn(ActorTask.gatherResources);
+				}
 			}
-			this.queue.done();
+		}
+		else if (currentTask.id == "build") {
+			if (this.building == null) {
+				this.queue.cancel();
+			}
+			else {
+				if (!hasMaterials(this.building.required)) {
+					this.queue.pushIn(ActorTask.gatherResources);
+				} else {
+					
+				}
+			}
+		}
+		else if (currentTask.id == "gatherResources") {
+			if (this.building != null) {
+				Material needed = null;
+				for (MaterialStack ms : this.building.required) {
+					if (this.materials.get(ms.material) == null) {
+						needed = ms.material;
+						break;
+					}
+					if (ms.amount > this.materials.get(ms.material)) {
+						needed = ms.material;
+						break;
+					}
+				}
+				if (needed == null) this.queue.done();
+				else {
+					Entity nearestNeeded = findNearest(needed.resource);
+					if (nearestNeeded != null) {
+						PApplet.println(nearestNeeded);
+						this.target = nearestNeeded;
+						this.targetPos = this.target.pos().add(0, 1);
+						this.queue.pushIn(ActorTask.navigateInteract);
+					} else {
+						this.queue.pushIn(ActorTask.explore);
+					}
+				}
+			} else {
+				this.queue.done();
+			}
+		}
+		else if (currentTask.id == "explore") {
+			if (this.counter < 10) {
+				this.targetPos = this.map.randomBorderPoint();
+				this.queue.pushIn(ActorTask.navigate);
+				this.counter++;
+			} else {
+				this.counter = 0;
+				this.queue.done();
+			}
 		}
 
+	}
+
+	private Entity findNearest(Class<? extends Harvestable> type) {
+		Entity closest = null;
+		float cd = Float.MAX_VALUE;
+		for (Entity e : this.map.entities.keySet()) {
+			if (e instanceof Harvestable) {
+				Harvestable h = (Harvestable) e;
+				if (e.getClass() == type && h.isHarvestable()) {
+					float d = PApplet.dist(this.actor.x, this.actor.y, this.map.entities.get(e).x, this.map.entities.get(e).y);
+					if (d < cd) {
+						closest = e;
+						cd = d;
+					}
+				}
+			}
+		}
+		return closest;
+	}
+
+	private boolean hasMaterials(List<MaterialStack> required) {
+		for (MaterialStack ms : required) {
+			Integer amount = this.materials.get(ms.material);
+			if (amount == null) return false;
+			if (amount < ms.amount) return false;
+		}
+		return true;
 	}
 
 	private void step() {

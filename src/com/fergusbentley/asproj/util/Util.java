@@ -40,6 +40,10 @@ public class Util {
 		return signs[rnd];
 	}
 	
+	public static boolean randBool() {
+		return randInt(0, 2) == 1;
+	}
+	
 	// x-coordinate of a tile -> position on screen
 	public static float gridToScreenX(GameState game, int gx) {
 		return (float) (((Config.SCREEN_WIDTH - game.getScale() * Config.WORLD_SIZE) / 2f) + (game.getScale() * (gx + game.getPan().x)));

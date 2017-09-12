@@ -1,4 +1,4 @@
-package com.fergusbentley.asproj.entity.structure;
+package com.fergusbentley.asproj.crafting;
 
 import com.fergusbentley.asproj.entity.EntityRock;
 import com.fergusbentley.asproj.entity.EntityTree;

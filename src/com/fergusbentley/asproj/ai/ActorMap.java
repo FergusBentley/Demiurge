@@ -7,6 +7,7 @@ import java.util.Map;
 import com.fergusbentley.asproj.Config;
 import com.fergusbentley.asproj.entity.Entity;
 import com.fergusbentley.asproj.util.Region;
+import com.fergusbentley.asproj.util.Util;
 import com.fergusbentley.asproj.world.World;
 
 import processing.core.PVector;
@@ -124,8 +125,6 @@ public class ActorMap {
 	public ArrayList<PVector> getPassableNeighbours(PVector current) {
 		return getPassableNeighbours(current, false, null);
 	}
-	
-
 
 	public ArrayList<PVector> getPassableNeighbours(PVector current, boolean treatUndiscoveredAsPassable, Entity entity) {
 		ArrayList<PVector> neighbours = new ArrayList<PVector>();
@@ -159,4 +158,12 @@ public class ActorMap {
 		return found;
 	}
 	
+	public PVector randomBorderPoint() {
+		boolean vertical = Util.randBool();
+		boolean firstSide = Util.randBool();
+		int x = vertical ? (firstSide ? this.region.left() : this.region.right()) : (Util.randInt(this.region.left(), this.region.right()));
+		int y = vertical ? (Util.randInt(this.region.top(), this.region.bottom())) : (firstSide ? this.region.top() : this.region.bottom());
+		PVector point = new PVector(x, y);
+		return point;
+	}
 }
