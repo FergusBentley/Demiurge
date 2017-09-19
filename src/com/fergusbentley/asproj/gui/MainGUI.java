@@ -38,8 +38,11 @@ public class MainGUI extends GUIGrid implements PConstants {
 				.zIndex(100).asGrid()
 				.addChild("loadingText", new GUIText(app, "Loading Assets...", 0, 0, 1, 1)));
 		
+		addChild("powersTray", new GUIGrid(app, 1, 16, 5, 15, 4, 13, panel.modify(StyleAttribute.SHOW_GRID, true))
+				.addChild("powersTitle", new GUIText(app, "Powers", 0, 0, 4, 1)));
+		
 		addChild("toolTray", new GUIGrid(app, 41, 31, 9, 1, 9, 1)
-				.addChild("maximiseSidebar", new GUIButton(app, 0, 0, 1, 1, Resources.get("button_question"), trans_button_gold)
+				.addChild("maximiseSidebar", new GUIButton(app, 0, 0, 1, 1, Resources.get("icon/button_question"), trans_button_gold)
 						.assign(new Callable<Boolean>() {
 							public Boolean call() {
 								getChild("sidebar").visible();
@@ -47,15 +50,15 @@ public class MainGUI extends GUIGrid implements PConstants {
 						        return true;
 							}
 						}))
-				.addChild("zoomIcon", new GUIIcon(app, 1, 0, 1, 1, "img/zoom.png"))
+				.addChild("zoomIcon", new GUIIcon(app, 1, 0, 1, 1, "icon/zoom"))
 				.addChild("zoomText", new GUIText(app, "100%", 2, 0, 3, 1))
-				.addChild("fpsIcon", new GUIIcon(app, 5, 0, 1, 1, "img/fps.png"))
+				.addChild("fpsIcon", new GUIIcon(app, 5, 0, 1, 1, "icon/fps"))
 				.addChild("fpsText", new GUIText(app, "60fps", 6, 0, 3, 1)));
 		
 		addChild("sidebar", new GUIGrid(app, 41, 5, 8, 20, 8, 20, panel)
 				.addChild("entityView", new GUIEntityRender(app, 1, 1, 6, 4, null, black_panel))
 				.addChild("entityInfo", new GUIList(app, 1, 6, 6, 13, black_panel))
-				.addChild("minimiseSidebar", new GUIButton(app, 7, 0, 1, 1, Resources.get("button_no"), trans_button)
+				.addChild("minimiseSidebar", new GUIButton(app, 7, 0, 1, 1, Resources.get("icon/button_no"), trans_button)
 						.assign(new Callable<Boolean>() {
 							public Boolean call() {
 								getChild("sidebar").hidden();
@@ -95,7 +98,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 				.zIndex(80)
 				.asGrid());
 		
-		addChild("pauseButton", new GUIButton(app, 1, 1, 1, 1, Resources.get("button_pause"))
+		addChild("pauseButton", new GUIButton(app, 1, 1, 1, 1, Resources.get("icon/button_pause"))
 				.assign(new Callable<Boolean>() {
 				    public Boolean call() {
 				        if (!pauseButtonActive) {
@@ -109,7 +112,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 				})
 				.zIndex(90));
 		
-		addChild("resumeButton", new GUIButton(app, 1, 1, 1, 1, Resources.get("button_play"))
+		addChild("resumeButton", new GUIButton(app, 1, 1, 1, 1, Resources.get("icon/button_play"))
 				.assign(new Callable<Boolean>() {
 				    public Boolean call() {
 				    	if (pauseButtonActive) {
