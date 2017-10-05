@@ -95,9 +95,9 @@ public class MainGUI extends GUIGrid implements PConstants {
 				.asGrid());
 		
 		addChild("pauseMenu", new GUIGrid(app, 0, 0, 50, 32, 50, 32, fade)
-				.addChild("pausePanel", new GUIPanel(app, 19, 9, 12, 14))
-				.addChild("pauseTitle", new GUIText(app, "Game Paused", 20, 10, 10, 2, black_panel))
-				.addChild("pauseResume", new GUIButton(app, 20, 14, 10, 2, "Resume", light_panel)
+				.addChild("pausePanel", new GUIPanel(app, 19, 8, 12, 17))
+				.addChild("pauseTitle", new GUIText(app, "Game Paused", 20, 9, 10, 2, black_panel))
+				.addChild("pauseResume", new GUIButton(app, 20, 13, 10, 2, "Resume", light_panel)
 						.assign(new Callable<Boolean>() {
 						    public Boolean call() {
 						    	if (pauseButtonActive) {
@@ -111,11 +111,18 @@ public class MainGUI extends GUIGrid implements PConstants {
 						})
 						.bind(TAB)
 					)
-				.addChild("pauseSave", new GUIButton(app, 20, 17, 10, 2, "Save", light_panel))
-				.addChild("pauseExit", new GUIButton(app, 20, 20, 10, 2, "Exit", light_panel)
+				.addChild("pauseSave", new GUIButton(app, 20, 16, 10, 2, "Save", light_panel))
+				.addChild("pauseMenuExit", new GUIButton(app, 20, 19, 10, 2, "Quit to Main Menu", light_panel)
 						.assign(new Callable<Boolean>() {
 						    public Boolean call() {
-						    	getChild("exitWarning").visible();
+						    	getChild("exitMenuWarning").visible();
+						        return true;
+						    }
+						}))
+				.addChild("pauseDesktopExit", new GUIButton(app, 20, 22, 10, 2, "Quit to Desktop", light_panel)
+						.assign(new Callable<Boolean>() {
+						    public Boolean call() {
+						    	getChild("exitDesktopWarning").visible();
 						        return true;
 						    }
 						}))
@@ -152,7 +159,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 				.hidden()
 				.zIndex(90));
 		
-		addChild("exitWarning", new GUIGrid(app, 0, 0, 50, 32, 50, 32, fade)
+		addChild("exitDesktopWarning", new GUIGrid(app, 0, 0, 50, 32, 50, 32, fade)
 				.addChild("exitPanel", new GUIPanel(app, 13, 12, 24, 7))
 				.addChild("exitText1", new GUIText(app, "Are you sure you want to exit the game?", 15, 13, 20, 1))
 				.addChild("exitText2", new GUIText(app, "Any unsaved progress will be lost.", 15, 14, 20, 1, unfocused))
@@ -167,7 +174,30 @@ public class MainGUI extends GUIGrid implements PConstants {
 				.addChild("exitDeny", new GUIButton(app, 26, 16, 10, 2, "No")
 						.assign(new Callable<Boolean>() {
 							public Boolean call() {
-								getChild("exitWarning").hidden();
+								getChild("exitDesktopWarning").hidden();
+								return true;
+							}
+						})
+						.bind(TAB))
+				.zIndex(85)
+				.hidden());
+		
+		addChild("exitMenuWarning", new GUIGrid(app, 0, 0, 50, 32, 50, 32, fade)
+				.addChild("exitPanel", new GUIPanel(app, 13, 12, 24, 7))
+				.addChild("exitText1", new GUIText(app, "Are you sure you want to quit to the main menu?", 15, 13, 20, 1))
+				.addChild("exitText2", new GUIText(app, "Any unsaved progress will be lost.", 15, 14, 20, 1, unfocused))
+				.addChild("exitConfirm", new GUIButton(app, 15, 16, 10, 2, "Yes")
+						.assign(new Callable<Boolean>() {
+							public Boolean call() {
+								game.setState(GameState.MAIN_MENU);
+								return true;
+							}
+						})
+						.bind(ENTER))
+				.addChild("exitDeny", new GUIButton(app, 26, 16, 10, 2, "No")
+						.assign(new Callable<Boolean>() {
+							public Boolean call() {
+								getChild("exitMenuWarning").hidden();
 								return true;
 							}
 						})
@@ -179,11 +209,15 @@ public class MainGUI extends GUIGrid implements PConstants {
 	
 	public void update(GameState game) {
 		
-		if (game.getState() == GameState.START_GENERATION) {
+		if (game.getState() == GameState.MAIN_MENU) {
+			getChild("mainMenu").visible = true;
+		}
+		
+		else if (game.getState() == GameState.START_GENERATION) {
 			getChild("loadScreen").getChild("loadingText").asText().text = "Generating World";
 		}
 		
-		if (game.getState() == GameState.GENERATION_SCREEN) {
+		else if (game.getState() == GameState.GENERATION_SCREEN) {
 			int n = (int) Math.floor((game.time() % 1200) / 300f);
 			int p = 3 - n;
 			String dots = new String(new char[n]).replace("\0", ".");
@@ -191,7 +225,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 			getChild("loadScreen").getChild("loadingText").asText().text = "Generating World" + dots + spaces;
 		}
 		
-		if (game.getState() == GameState.IN_GAME) {
+		else if (game.getState() == GameState.IN_GAME) {
 			getChild("loadScreen").hidden();
 			updateSidebar(game);
 		}
