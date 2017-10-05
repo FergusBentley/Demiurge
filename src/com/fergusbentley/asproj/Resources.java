@@ -28,8 +28,12 @@ public class Resources {
 			if (list[i].isFile()) {
 				String name = list[i].getName();
 				PImage image = app.loadImage(path + "/" + name);
-				String pn = path + "/" + name;
-				resources.put(pn.substring(4, pn.length() - 4), image);
+				if (image != null) {
+					String pn = path + "/" + name;
+					resources.put(pn.substring(4, pn.length() - 4), image);
+				} else {
+					PApplet.println("Error: Identified image named '"+ name +"', but failed to load it.");
+				}
 				// PApplet.println(pn.substring(4, pn.length() - 4));
 			}
 			else if (list[i].isDirectory()) {
@@ -41,6 +45,7 @@ public class Resources {
 	
 	public static PImage get(String name) {
 		if (resources.containsKey(name)) return resources.get(name);
+		PApplet.println("Error: No such resource named '"+ name +"'");
 		return null;
 	}
 	

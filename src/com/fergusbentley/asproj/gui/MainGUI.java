@@ -38,7 +38,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 				.zIndex(100).asGrid()
 				.addChild("loadingText", new GUIText(app, "Loading Assets...", 0, 0, 1, 1)));
 		
-		addChild("powersTray", new GUIGrid(app, 1, 16, 5, 15, 4, 13, panel.modify(StyleAttribute.SHOW_GRID, true))
+		addChild("powersTray", new GUIGrid(app, 1, 16, 5, 15, 4, 13, panel)
 				.addChild("powersTitle", new GUIText(app, "Powers", 0, 0, 4, 1)));
 		
 		addChild("toolTray", new GUIGrid(app, 41, 31, 9, 1, 9, 1)

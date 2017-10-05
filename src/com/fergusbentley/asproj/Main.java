@@ -163,7 +163,7 @@ public class Main extends PApplet implements PConstants {
 			println("Done loading world in " + loadSecs + "s");
 			int gx = Config.WORLD_SIZE / 2;
 			int gy = Config.WORLD_SIZE / 2;
-			// world.spawnList.add(new StructAbode(world, gx + 10, gy, 2));
+			world.spawnList.add(new StructAbode(world, gx + 10, gy, 2));
 			world.spawnList.add(new ActorHuman(world, gx, gy));
 		}
 		game.setState(2);

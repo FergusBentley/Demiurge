@@ -2,7 +2,9 @@ package com.fergusbentley.asproj.gui;
 
 import com.fergusbentley.asproj.GameState;
 import com.fergusbentley.asproj.Main;
+import com.fergusbentley.asproj.Resources;
 
+import processing.core.PApplet;
 import processing.core.PImage;
 
 public class GUIIcon extends GUIElement {
@@ -13,7 +15,7 @@ public class GUIIcon extends GUIElement {
 	public GUIIcon(Main a, int x, int y, int w, int h, String pa) {
 		super(a, x, y, w, h);
 		this.path = pa;
-		this.file = app.loadImage(path);
+		this.file = Resources.get(path);
 	}
 
 	@Override

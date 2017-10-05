@@ -104,7 +104,9 @@ public class GUIGrid extends GUIElement {
 			children.addAll(elements.values());
 			Collections.sort(children);
 			for (GUIElement ele : children) {
-				ele.show(game);
+				if (ele.visible) {
+					ele.show(game);
+				}
 			}
 
 		}
