@@ -95,7 +95,7 @@ public class Main extends PApplet implements PConstants {
 		});
 		
 		gui = new MainGUI(this);
-		gui.construct();
+		gui.construct(game);
 		gui.show(game);
 		
 		viewport = new Viewport(this);
@@ -108,23 +108,33 @@ public class Main extends PApplet implements PConstants {
 		
 		game.setTime(millis());
 
-		if (game.getState() == 0) {
+		if (game.getState() == GameState.MAIN_MENU) {
+			
+		}
+		
+		if (game.getState() == GameState.START_GENERATION) {
 
 			randomSeed(seed); // seed the generators
 			noiseSeed(seed);
 			
-			game.setState(1); // Move on to the next phase
+			gui.getChild("mainMenu").visible = false;
+			
+			game.setState(GameState.GENERATION_SCREEN); // Move on to the next phase
 			
 			loadStart = millis(); // 
 			
 			thread("loadWorld");
 		}
 		
-		if (game.getState() == 1) {
+		else if (game.getState() == GameState.START_LOAD) {
+
+			// TBA
 			
 		}
 		
-		if (game.getState() == 2) {
+		else if (game.getState() == GameState.GENERATION_SCREEN || game.getState() == GameState.LOAD_SCREEN) {}
+		
+		else if (game.getState() == GameState.IN_GAME) {
 		
 			if (!game.isPaused()) {
 			
@@ -166,7 +176,7 @@ public class Main extends PApplet implements PConstants {
 			world.spawnList.add(new StructAbode(world, gx + 10, gy, 2));
 			world.spawnList.add(new ActorHuman(world, gx, gy));
 		}
-		game.setState(2);
+		game.setState(GameState.IN_GAME);
 	}
 	
 	// Detect key presses, pan if arrow keys pressed
@@ -182,30 +192,35 @@ public class Main extends PApplet implements PConstants {
 	}
 	
 	public void mouseClicked(MouseEvent event) {
-		if (game.getState() != 2) return;
 		
 		if (event.getButton() == LEFT) {
 			List<GUIElement> elems = gui.getHoveredChildren();
 			if (elems.size() > 0) {
 				GUIElement e = elems.get(elems.size() - 1);
+				PApplet.println(e);
 				if (e instanceof GUIButton) {
 					((GUIButton)e).click();
 				}
 				return;
 			}
 			
-			List<Entity> ents = world.getEntitiesUnderMouse(viewport.screenToGridX(mouseX), viewport.screenToGridY(mouseY));
-			if (ents.size() > 0) {
-				Entity ent = ents.get(0);
-				game.setSelectedEntity(ent);
-				return;
+
+			if (game.getState() == GameState.IN_GAME) {
+				List<Entity> ents = world.getEntitiesUnderMouse(viewport.screenToGridX(mouseX), viewport.screenToGridY(mouseY));
+				if (ents.size() > 0) {
+					Entity ent = ents.get(0);
+					game.setSelectedEntity(ent);
+					return;
+				}
 			}
 
 		} else {
-			int gx = viewport.screenToGridX(mouseX);
-			int gy = viewport.screenToGridY(mouseY);
-			int id = gy * Config.WORLD_SIZE + gx;
-			println(gx, gy, id);
+			if (game.getState() == GameState.IN_GAME) {
+				int gx = viewport.screenToGridX(mouseX);
+				int gy = viewport.screenToGridY(mouseY);
+				int id = gy * Config.WORLD_SIZE + gx;
+				println(gx, gy, id);
+			}
 		}
 		
 	}

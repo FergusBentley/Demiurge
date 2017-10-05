@@ -22,8 +22,15 @@ public class GameState {
 	private Entity selectedEntity;
 	private ParticleSystem mouseEffect;
 	
+	public static final int MAIN_MENU = 0;
+	public static final int START_LOAD = 1;
+	public static final int LOAD_SCREEN = 2;
+	public static final int START_GENERATION = 3;
+	public static final int GENERATION_SCREEN = 4;
+	public static final int IN_GAME = 5;
+	
 	public GameState() {
-		this.setState(0);
+		this.setState(MAIN_MENU);
 		this.setSelectedEntity(null);
 		this.setZoom(Config.DEFAULT_ZOOM);
 	}

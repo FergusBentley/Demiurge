@@ -22,11 +22,10 @@ public class MainGUI extends GUIGrid implements PConstants {
 	}
 	
 	
-	public void construct() {
+	public void construct(GameState game) {
 		
 		GUIStyle blackout = new GUIStyle(app, "styles/blackout.json");
 		GUIStyle panel = new GUIStyle(app, "styles/panel.json");
-		GUIStyle grid_panel = new GUIStyle(app, "styles/panel_grid.json");
 		GUIStyle black_panel = new GUIStyle(app, "styles/black_panel.json");
 		GUIStyle light_panel = new GUIStyle(app, "styles/light_panel.json");
 		GUIStyle trans_button = new GUIStyle(app, "styles/trans_button.json");
@@ -34,6 +33,27 @@ public class MainGUI extends GUIGrid implements PConstants {
 		GUIStyle fade = new GUIStyle(app, "styles/fade.json");
 		GUIStyle unfocused = new GUIStyle(app, "styles/unfocused.json");
 		
+		
+		addChild("mainMenu", new GUIGrid(app, 0, 0, 50, 32, 50, 32, blackout)
+				.addChild("mainTitle", new GUIText(app, "Demiurge", 20, 10, 10, 2))
+				.addChild("mainGenerate", new GUIButton(app, 20, 14, 10, 2, "Generate New World", light_panel)
+						.assign(new Callable<Boolean>() {
+						    public Boolean call() {
+						    	game.setState(GameState.START_GENERATION);
+						    	return true;
+						    }
+						})
+					)
+				.addChild("mainLoad", new GUIButton(app, 20, 17, 10, 2, "Load Existing World", light_panel))
+				.addChild("pauseExit", new GUIButton(app, 20, 20, 10, 2, "Quit to Desktop", light_panel)
+						.assign(new Callable<Boolean>() {
+						    public Boolean call() {
+						    	app.exit();
+						        return true;
+						    }
+						}))
+				.zIndex(1000)
+				.asGrid());
 		
 		addChild("loadScreen", new GUIGrid(app, 0, 0, 50, 32, 1, 1, blackout)
 				.zIndex(100).asGrid()
@@ -159,11 +179,11 @@ public class MainGUI extends GUIGrid implements PConstants {
 	
 	public void update(GameState game) {
 		
-		if (game.getState() == 0) {
+		if (game.getState() == GameState.START_GENERATION) {
 			getChild("loadScreen").getChild("loadingText").asText().text = "Generating World";
 		}
 		
-		if (game.getState() == 1) {
+		if (game.getState() == GameState.GENERATION_SCREEN) {
 			int n = (int) Math.floor((game.time() % 1200) / 300f);
 			int p = 3 - n;
 			String dots = new String(new char[n]).replace("\0", ".");
@@ -171,7 +191,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 			getChild("loadScreen").getChild("loadingText").asText().text = "Generating World" + dots + spaces;
 		}
 		
-		if (game.getState() == 2) {
+		if (game.getState() == GameState.IN_GAME) {
 			getChild("loadScreen").hidden();
 			updateSidebar(game);
 		}
