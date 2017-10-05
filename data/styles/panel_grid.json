@@ -1,0 +1,7 @@
+{
+	"fill_colour" 	: [24, 56, 86, 255],
+	"border_colour" : [80, 80, 80, 255],
+	"border_width"	: 3,
+	"font_colour"	: [255, 255, 255, 255],
+	"show_grid"		: true
+}

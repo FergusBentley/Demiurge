@@ -26,6 +26,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 		
 		GUIStyle blackout = new GUIStyle(app, "styles/blackout.json");
 		GUIStyle panel = new GUIStyle(app, "styles/panel.json");
+		GUIStyle grid_panel = new GUIStyle(app, "styles/panel_grid.json");
 		GUIStyle black_panel = new GUIStyle(app, "styles/black_panel.json");
 		GUIStyle light_panel = new GUIStyle(app, "styles/light_panel.json");
 		GUIStyle trans_button = new GUIStyle(app, "styles/trans_button.json");
@@ -38,8 +39,12 @@ public class MainGUI extends GUIGrid implements PConstants {
 				.zIndex(100).asGrid()
 				.addChild("loadingText", new GUIText(app, "Loading Assets...", 0, 0, 1, 1)));
 		
-		addChild("powersTray", new GUIGrid(app, 1, 16, 5, 15, 4, 13, panel)
-				.addChild("powersTitle", new GUIText(app, "Powers", 0, 0, 4, 1)));
+		addChild("powersTray", new GUIGrid(app, 1, 16, 4, 15, 6, 24, panel)
+				.addChild("powersTitle", new GUIText(app, "Powers", 0, 1, 6, 2))
+				.addChild("powerFire", new GUIButton(app, 1, 4, 4, 4, Resources.get("icon/button_fire"), light_panel))
+				.addChild("powerRain", new GUIButton(app, 1, 9, 4, 4, Resources.get("icon/button_rain"), light_panel))
+				.addChild("powerTree", new GUIButton(app, 1, 14, 4, 4, Resources.get("icon/button_tree"), light_panel))
+				.addChild("powerNoTree", new GUIButton(app, 1, 19, 4, 4, Resources.get("icon/button_notree"), light_panel)));
 		
 		addChild("toolTray", new GUIGrid(app, 41, 31, 9, 1, 9, 1)
 				.addChild("maximiseSidebar", new GUIButton(app, 0, 0, 1, 1, Resources.get("icon/button_question"), trans_button_gold)
