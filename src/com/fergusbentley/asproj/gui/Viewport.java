@@ -73,7 +73,7 @@ public class Viewport {
 	}
 
 	public void highlight(int gx, int gy, int gw, int gh, int c) {
-		this.highlight(gx, gy, gw, gh, c, 3);
+		this.highlight(gx, gy, gw, gh, c, 1);
 	}
 	
 	// x-coordinate of a tile -> position on screen
