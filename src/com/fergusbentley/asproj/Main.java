@@ -135,7 +135,7 @@ public class Main extends PApplet implements PConstants {
 		else if (game.getState() == GameState.GENERATION_SCREEN || game.getState() == GameState.LOAD_SCREEN) {}
 		
 		else if (game.getState() == GameState.IN_GAME) {
-		
+			
 			if (!game.isPaused()) {
 			
 				// Update entities

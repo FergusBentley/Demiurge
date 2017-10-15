@@ -114,13 +114,15 @@ public class Viewport {
 
 	// Update variables when camera moves to limit calculations per draw
 	public void update(GameState game) {
+		
+		this.size = game.getScale();
+		this.panX = game.getPan().x;
+		this.panY = game.getPan().y;
+		
 		this.minX = PApplet.constrain((int) Math.floor(screenToGridX(0)), 0, GW);
 		this.minY = PApplet.constrain((int) Math.floor(screenToGridY(0)), 0, GH);
 		this.maxX = PApplet.constrain((int) Math.ceil(screenToGridX(w)), 0, GW);
-		this.maxY = PApplet.constrain((int) Math.ceil(screenToGridY(h)), 0, GH);
-		
-		this.size = game.getScale();
-		
+		this.maxY = PApplet.constrain((int) Math.ceil(screenToGridY(h)), 0, GH);	
 		
 	}
 	
