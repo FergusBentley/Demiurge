@@ -1,11 +1,10 @@
 package com.fergusbentley.asproj.gui;
 
+import processing.core.PImage;
+
 import com.fergusbentley.asproj.GameState;
 import com.fergusbentley.asproj.Main;
 import com.fergusbentley.asproj.Resources;
-
-import processing.core.PApplet;
-import processing.core.PImage;
 
 public class GUIIcon extends GUIElement {
 
