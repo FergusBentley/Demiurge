@@ -163,7 +163,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 				.addChild("exitPanel", new GUIPanel(app, 13, 12, 24, 7))
 				.addChild("exitText1", new GUIText(app, "Are you sure you want to exit the game?", 15, 13, 20, 1))
 				.addChild("exitText2", new GUIText(app, "Any unsaved progress will be lost.", 15, 14, 20, 1, unfocused))
-				.addChild("exitConfirm", new GUIButton(app, 15, 16, 10, 2, "Yes")
+				.addChild("exitConfirm", new GUIButton(app, 15, 16, 10, 2, "Yes", light_panel)
 						.assign(new Callable<Boolean>() {
 							public Boolean call() {
 								app.exit();
@@ -171,7 +171,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 							}
 						})
 						.bind(ENTER))
-				.addChild("exitDeny", new GUIButton(app, 26, 16, 10, 2, "No")
+				.addChild("exitDeny", new GUIButton(app, 26, 16, 10, 2, "No", light_panel)
 						.assign(new Callable<Boolean>() {
 							public Boolean call() {
 								getChild("exitDesktopWarning").hidden();
@@ -186,7 +186,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 				.addChild("exitPanel", new GUIPanel(app, 13, 12, 24, 7))
 				.addChild("exitText1", new GUIText(app, "Are you sure you want to quit to the main menu?", 15, 13, 20, 1))
 				.addChild("exitText2", new GUIText(app, "Any unsaved progress will be lost.", 15, 14, 20, 1, unfocused))
-				.addChild("exitConfirm", new GUIButton(app, 15, 16, 10, 2, "Yes")
+				.addChild("exitConfirm", new GUIButton(app, 15, 16, 10, 2, "Yes", light_panel)
 						.assign(new Callable<Boolean>() {
 							public Boolean call() {
 								game.setState(GameState.MAIN_MENU);
@@ -194,7 +194,7 @@ public class MainGUI extends GUIGrid implements PConstants {
 							}
 						})
 						.bind(ENTER))
-				.addChild("exitDeny", new GUIButton(app, 26, 16, 10, 2, "No")
+				.addChild("exitDeny", new GUIButton(app, 26, 16, 10, 2, "No", light_panel)
 						.assign(new Callable<Boolean>() {
 							public Boolean call() {
 								getChild("exitMenuWarning").hidden();
