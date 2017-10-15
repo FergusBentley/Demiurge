@@ -151,7 +151,8 @@ public class Main extends PApplet implements PConstants {
 				world.sortEntities();
 			}
 			
-			viewport.draw(game, world);
+			viewport.update(game);
+			viewport.draw(world);
 			
 			//println(world.entities.size());
 		}		

@@ -17,8 +17,6 @@ public class Viewport {
 	private PApplet app;
 	private int w, h;
 
-	private int scale = Config.TILE_SIZE;
-	private float zoom = 1;
 	private float size; // apparent unit distance
 
 	private float panX; // Offset of viewport from centre
@@ -36,8 +34,6 @@ public class Viewport {
 		this.app = a;
 		this.w = app.width;
 		this.h = app.height;
-		this.size = scale * zoom;
-		updateDrawRegion();
 	}
 
 	// Draw an appropriately scaled and positioned square
@@ -96,14 +92,6 @@ public class Viewport {
 		return (int) (((sy - ((h - (size * GH)) / 2)) / size) - panY);
 	}
 
-	// Update variables when camera moves to limit calculations per draw
-	void updateDrawRegion() {
-		minX = PApplet.constrain((int) Math.floor(screenToGridX(0)), 0, GW);
-		minY = PApplet.constrain((int) Math.floor(screenToGridY(0)), 0, GH);
-		maxX = PApplet.constrain((int) Math.ceil(screenToGridX(w)), 0, GW);
-		maxY = PApplet.constrain((int) Math.ceil(screenToGridY(h)), 0, GH);
-	}
-
 	// Is a grid coordinate on screen? (i.e. should things here be drawn?)
 	boolean onScreen(int x, int y) {
 		return x >= minX && y >= minY && x <= maxX && y <= maxY;
@@ -124,15 +112,21 @@ public class Viewport {
 		return os;
 	}
 
-	public void draw(GameState game, World world) {
+	// Update variables when camera moves to limit calculations per draw
+	public void update(GameState game) {
+		this.minX = PApplet.constrain((int) Math.floor(screenToGridX(0)), 0, GW);
+		this.minY = PApplet.constrain((int) Math.floor(screenToGridY(0)), 0, GH);
+		this.maxX = PApplet.constrain((int) Math.ceil(screenToGridX(w)), 0, GW);
+		this.maxY = PApplet.constrain((int) Math.ceil(screenToGridY(h)), 0, GH);
+		
+		this.size = game.getScale();
+		
+		
+	}
+	
+	public void draw(World world) {
 
 		app.background(Colour.BLUE);
-		
-		this.zoom = game.getZoom();
-		this.panX = game.getPan().x;
-		this.panY = game.getPan().y;
-		
-		updateDrawRegion();
 		
 		// Draw tiles within viewport bounds
 		for (int x = minX; x < maxX + 1; x++) {
